@@ -4,10 +4,12 @@ import {
   Post,
   Query,
   Request,
-  Response,
+  Res,
   Redirect,
+  HttpStatus,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { send } from 'process';
 import { AppService } from '../../services/app.service';
 import { UserService } from '../../services/user.service';
 
@@ -33,18 +35,18 @@ export class AuthController {
   }
 
   @Get('token')
-  async generateToken(@Query() query, @Response() res) {
+  async generateToken(@Query() query, @Res() res) {
     const { data, error } = await this.userService.generateToken(query.code);
 
     if (error) {
-      res.status(500).send(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     } else {
       res.send(data);
     }
   }
 
   @Post('register')
-  async registerUser(@Request() req, @Response() res) {
+  async registerUser(@Res() res, @Request() req) {
     const body = req.body;
 
     const payload = {
@@ -60,9 +62,9 @@ export class AuthController {
     const { data, error } = await this.userService.registerUser(payload);
 
     if (error) {
-      res.status(500).send(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
     } else {
-      res.send(data);
+      res.status(HttpStatus.OK).send(data);
     }
   }
 }

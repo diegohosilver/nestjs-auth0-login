@@ -23,9 +23,9 @@ export class UserService {
       return { data: response.data };
     } catch (er) {
       if (er.response) {
-        return er.response;
+        return { error: er.response.data };
       } else {
-        return er;
+        return { error: er };
       }
     }
   }
@@ -59,9 +59,9 @@ export class UserService {
       return { data: response.data };
     } catch (er) {
       if (er.response) {
-        return er.response;
+        return { error: er.response.data };
       } else {
-        return er;
+        return { error: er };
       }
     }
   }
