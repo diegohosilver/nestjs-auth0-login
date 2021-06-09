@@ -12,7 +12,7 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     ConfigModule.forFeature(authConfig),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-	ServicesModule
+    ServicesModule,
   ],
   controllers: [AuthController],
   providers: [JwtStrategy],

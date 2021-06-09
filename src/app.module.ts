@@ -13,9 +13,9 @@ import { ServicesModule } from './services/services.module';
       load: [appConfig],
     }),
     AuthModule,
-	UserModule,
-	ServicesModule
+    UserModule,
+    ServicesModule,
   ],
-  controllers: [AppController]
+  controllers: [AppController],
 })
 export class AppModule {}

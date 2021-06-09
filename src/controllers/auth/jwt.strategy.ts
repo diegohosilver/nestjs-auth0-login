@@ -12,7 +12,9 @@ export class JwtStrategy extends PassportStrategy(BaseStrategy) {
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
-        jwksUri: `https://${configService.get<string>('auth.domain')}/.well-known/jwks.json`,
+        jwksUri: `https://${configService.get<string>(
+          'auth.domain',
+        )}/.well-known/jwks.json`,
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

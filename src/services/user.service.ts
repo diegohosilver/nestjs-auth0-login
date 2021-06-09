@@ -5,46 +5,47 @@ import axios from 'axios';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly configService: ConfigService) {}
 
-	constructor(private readonly configService: ConfigService) {}
+  async generateToken(code: string) {
+    const response = await axios.post(
+      `https://${this.configService.get<string>('auth.domain')}/oauth/token`,
+      {
+        grant_type: 'authorization_code',
+        client_id: this.configService.get<string>('auth.clientId'),
+        client_secret: this.configService.get<string>('auth.clientSecret'),
+        code,
+        redirect_uri: `${this.configService.get<string>('auth.audience')}`,
+      },
+    );
 
-	async generateToken(code: string) {
-		let response = await axios.post(
-			`https://${this.configService.get<string>('auth.domain')}/oauth/token`,
-			{
-			  grant_type: 'authorization_code',
-			  client_id: this.configService.get<string>('auth.clientId'),
-			  client_secret: this.configService.get<string>('auth.clientSecret'),
-			  code: code,
-			  redirect_uri: `${this.configService.get<string>('auth.audience')}`,
-			},
-		);
+    return response.data;
+  }
 
-		return response.data;
-	}
+  async getUser(req: any): Promise<User> {
+    const authZero = new ManagementClient({
+      domain: this.configService.get<string>('auth.domain'),
+      clientId: this.configService.get<string>('auth.clientId'),
+      clientSecret: this.configService.get<string>('auth.clientSecret'),
+      scope: 'read:users update:users',
+    });
 
-	async getUser(req: any): Promise<User> {
-		const authZero = new ManagementClient({
-			domain: this.configService.get<string>('auth.domain'),
-			clientId: this.configService.get<string>('auth.clientId'),
-			clientSecret: this.configService.get<string>('auth.clientSecret'),
-			scope: 'read:users update:users',
-		  });
-	  
-		return await authZero
-				.getUser({ id: req.user.sub })
-				.then((user: User) => {
-					return user;
-				})
-				.catch((err) => {
-					return err;
-				});
-	}
+    return await authZero
+      .getUser({ id: req.user.sub })
+      .then((user: User) => {
+        return user;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
 
-	async registerUser(req: any): Promise<any> {
-		let url = `https://${this.configService.get<string>('auth.domain')}/dbconnections/signup`;
-		let response = await axios.post(url, req);
+  async registerUser(req: any): Promise<any> {
+    const url = `https://${this.configService.get<string>(
+      'auth.domain',
+    )}/dbconnections/signup`;
+    const response = await axios.post(url, req);
 
-		return response.data;
-	}
+    return response.data;
+  }
 }

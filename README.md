@@ -4,21 +4,6 @@
 
 <p align="center"><a href="https://nestjs.com">NestJS</a> + <a href="https://auth0.com">Auth0</a> = :heart:</p>
 
-<p align="center">
-  <a href="https://github.com/jajaperson/nestjs-auth0/releases">
-    <img src="https://img.shields.io/github/v/tag/jajaperson/nestjs-auth0?label=version" />
-  </a>
-  <a href="https://github.com/jajaperson/nestjs-auth0/actions">
-    <img src="https://github.com/jajaperson/nestjs-auth0/workflows/build/badge.svg" />
-  </a>
-  <a href="https://codecov.io/gh/jajaperson/nestjs-auth0">
-    <img src="https://codecov.io/gh/jajaperson/nestjs-auth0/branch/master/graph/badge.svg" />
-  </a>
-  <a href="https://dependabot.com">
-    <img src="https://api.dependabot.com/badges/status?host=github&repo=jajaperson/nestjs-auth0" />
-  </a>
-</p>
-
 ## Description
 
 A template for using [Auth0](https://auth0.com) with the
@@ -101,8 +86,7 @@ The [`JwtStrategy`](src/controllers/auth/jwt.strategy.ts) injectable contains
 all the core functionality, where the constructor sets up core token validation
 using the [jwks-rsa](https://ghub.io/jwks) library. All the Auth0 configuration
 for this is done in the [`.env`](.env.example) file using
-[@nestjs/config](https://ghub.io/@nestjs/config) (see [above](#Setup)). On any
-request with authentication, the decoded JSON web token (which should follow
+[@nestjs/config](https://ghub.io/@nestjs/config) (see [above](#Setup))
 
 `AuthModule` is imported by [`AppModule`](src/app.module.ts), and protected
 routes are decorated with `@UseGuards(AuthGuard('jwt'))` in
