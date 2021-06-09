@@ -8,18 +8,26 @@ export class UserService {
   constructor(private readonly configService: ConfigService) {}
 
   async generateToken(code: string) {
-    const response = await axios.post(
-      `https://${this.configService.get<string>('auth.domain')}/oauth/token`,
-      {
-        grant_type: 'authorization_code',
-        client_id: this.configService.get<string>('auth.clientId'),
-        client_secret: this.configService.get<string>('auth.clientSecret'),
-        code,
-        redirect_uri: `${this.configService.get<string>('auth.audience')}`,
-      },
-    );
+    try {
+      const response = await axios.post(
+        `https://${this.configService.get<string>('auth.domain')}/oauth/token`,
+        {
+          grant_type: 'authorization_code',
+          client_id: this.configService.get<string>('auth.clientId'),
+          client_secret: this.configService.get<string>('auth.clientSecret'),
+          code,
+          redirect_uri: `${this.configService.get<string>('auth.audience')}`,
+        },
+      );
 
-    return response.data;
+      return { data: response.data };
+    } catch (er) {
+      if (er.response) {
+        return er.response;
+      } else {
+        return er;
+      }
+    }
   }
 
   async getUser(req: any): Promise<User> {
@@ -44,8 +52,17 @@ export class UserService {
     const url = `https://${this.configService.get<string>(
       'auth.domain',
     )}/dbconnections/signup`;
-    const response = await axios.post(url, req);
 
-    return response.data;
+    try {
+      const response = await axios.post(url, req);
+
+      return { data: response.data };
+    } catch (er) {
+      if (er.response) {
+        return er.response;
+      } else {
+        return er;
+      }
+    }
   }
 }

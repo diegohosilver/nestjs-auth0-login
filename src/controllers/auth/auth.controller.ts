@@ -4,6 +4,7 @@ import {
   Post,
   Query,
   Request,
+  Response,
   Redirect,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -32,15 +33,21 @@ export class AuthController {
   }
 
   @Get('token')
-  async generateToken(@Query() query) {
-    return await this.userService.generateToken(query.code);
+  async generateToken(@Query() query, @Response() res) {
+    const { data, error } = await this.userService.generateToken(query.code);
+
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.send(data);
+    }
   }
 
   @Post('register')
-  async registerUser(@Request() req) {
+  async registerUser(@Request() req, @Response() res) {
     const body = req.body;
 
-    const data = {
+    const payload = {
       client_id: this.configService.get<string>('auth.clientId'),
       email: body.email,
       password: body.password,
@@ -50,6 +57,12 @@ export class AuthController {
       picture: body.picture,
     };
 
-    return await this.userService.registerUser(data);
+    const { data, error } = await this.userService.registerUser(payload);
+
+    if (error) {
+      res.status(500).send(error);
+    } else {
+      res.send(data);
+    }
   }
 }
