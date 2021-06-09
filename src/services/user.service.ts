@@ -9,7 +9,7 @@ export class UserService {
 	constructor(private readonly configService: ConfigService) {}
 
 	async generateToken(code: string) {
-		return await axios.post(
+		let response = await axios.post(
 			`https://${this.configService.get<string>('auth.domain')}/oauth/token`,
 			{
 			  grant_type: 'authorization_code',
@@ -18,7 +18,9 @@ export class UserService {
 			  code: code,
 			  redirect_uri: `${this.configService.get<string>('auth.audience')}`,
 			},
-		  );
+		);
+
+		return response.data;
 	}
 
 	async getUser(req: any): Promise<User> {
@@ -37,5 +39,12 @@ export class UserService {
 				.catch((err) => {
 					return err;
 				});
+	}
+
+	async registerUser(req: any): Promise<any> {
+		let url = `https://${this.configService.get<string>('auth.domain')}/dbconnections/signup`;
+		let response = await axios.post(url, req);
+
+		return response.data;
 	}
 }

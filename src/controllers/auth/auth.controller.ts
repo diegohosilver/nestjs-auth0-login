@@ -33,9 +33,24 @@ import {
   
 	@Get('token')
 	async generateToken(@Query() query) {
-	  let response = await this.userService.generateToken(query.code);
-  
-	  return response.data;
+	  return await this.userService.generateToken(query.code);
+	}
+
+	@Post('register')
+	async registerUser(@Request() req) {
+		let body = req.body;
+
+		let data = {
+			client_id: this.configService.get<string>('auth.clientId'),
+			email: body.email,
+			password: body.password,
+			connection: this.configService.get<string>('auth.connection'),
+			name: body.name,
+			nickname: body.nickname,
+			picture: body.picture
+		}
+
+		return await this.userService.registerUser(data);	
 	}
   }
   

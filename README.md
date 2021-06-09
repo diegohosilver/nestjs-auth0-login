@@ -26,7 +26,7 @@ A template for using [Auth0](https://auth0.com) with the
 repository or run
 
 ```bash
-$ git clone --depth 1 https://github.com/jajaperson/nestjs-auth0.git
+$ git clone --depth 1 https://github.com/le0dime/nestjs-auth0-login.git
 ```
 
 ## Setup
@@ -40,12 +40,13 @@ AUTH0_DOMAIN={your Auth0 domain}
 AUTH0_CLIENT_ID={the Auth0 client ID for your app}
 AUTH0_CLIENT_SECRET={the Auth0 client secret for your app}
 AUTH0_AUDIENCE={http://localhost:3000 or your production domain accordingly}
+AUTH0_CONNECTION={your Auth0 database name configured to your client}
 ```
 
 A template `.env` file can be found at [`.env.example`](.env.example).
 
 You may also like to remove all the irrelevant metadata from the `package.json`,
-suck as the `repository`, `homepage`, `bugs`, and `description` fields.
+such as the `repository`, `homepage`, `bugs`, and `description` fields.
 
 ## Installation
 
@@ -86,32 +87,27 @@ $ npm run test:cov
 This template nest app uses the [jwks-rsa](https://ghub.io/jwks-rsa) package
 along with [passport-jwt](https://ghub.io/passport-jwt) and
 [@nestjs/passport](https://ghub.io/@nestjs/passport) for authentication. All
-authentication logic is in the [`/src/auth/`](src/auth/) submodule.
+authentication logic is in the [`/src/controllers/auth`](src/controllers/auth/)
+submodule.
 
 ```
-src/auth/
+src/controllers/auth/
 ├── auth.module.ts
-├── interfaces
-│   └── jwt-payload.interface.ts
-├── jwt.strategy.spec.ts
+├── auth.controller.ts
 └── jwt.strategy.ts
 ```
 
-The [`JwtStrategy`](src/auth/jwt.strategy.ts) injectable contains all the core
-functionality, where the constructor sets up core token validation using the
-[jwks-rsa](https://ghub.io/jwks) library. All the Auth0 configuration for this
-is done in the [`.env`](.env.example) file using
+The [`JwtStrategy`](src/controllers/auth/jwt.strategy.ts) injectable contains
+all the core functionality, where the constructor sets up core token validation
+using the [jwks-rsa](https://ghub.io/jwks) library. All the Auth0 configuration
+for this is done in the [`.env`](.env.example) file using
 [@nestjs/config](https://ghub.io/@nestjs/config) (see [above](#Setup)). On any
 request with authentication, the decoded JSON web token (which should follow
-[`JwtPayload`](src/auth/interfaces/jwt-payload.interface.ts)) is passed to the
-`validate`, which checks the token for the required scopes.
-
-The [`AuthModule`](src/auth/auth.module.ts) itself exports both `PassportModule`
-and the `JwtStrategy` injectable, and registers `JwtStrategy` as default.
 
 `AuthModule` is imported by [`AppModule`](src/app.module.ts), and protected
-routes are decorated with `@UseGuards(AuthGuard())` in
-[`AppController`](src/app.controller.ts).
+routes are decorated with `@UseGuards(AuthGuard('jwt'))` in
+[`AppController`](src/app.controller.ts) and
+[`UserController`](src/controllers/user/user.controller.ts).
 
 ## More info
 

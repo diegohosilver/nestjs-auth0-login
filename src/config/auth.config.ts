@@ -5,4 +5,5 @@ export default registerAs('auth', () => ({
   clientId: process.env.AUTH0_CLIENT_ID,
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   audience: process.env.AUTH0_AUDIENCE,
+  connection: process.env.AUTH0_CONNECTION
 }));

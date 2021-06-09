@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
-import { AppService } from './services/app.service';
 import { AuthModule } from './controllers/auth/auth.module';
 
 describe('AppController', () => {
@@ -12,7 +11,6 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot(), AuthModule],
       controllers: [AppController],
-      providers: [AppService],
     }).compile();
 
     appController = app.get<AppController>(AppController);
