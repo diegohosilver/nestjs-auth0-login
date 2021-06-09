@@ -4,6 +4,18 @@
 
 <p align="center"><a href="https://nestjs.com">NestJS</a> + <a href="https://auth0.com">Auth0</a> = :heart:</p>
 
+<p align="center">
+  <a href="https://github.com/le0dime/nestjs-auth0-login/releases">
+    <img src="https://img.shields.io/github/v/tag/le0dime/nestjs-auth0-login?label=version" />
+  </a>
+  <a href="https://github.com/le0dime/nestjs-auth0-login/actions">
+    <img src="https://github.com/le0dime/nestjs-auth0-login/workflows/build/badge.svg" />
+  </a>
+  <a href="https://codecov.io/gh/le0dime/nestjs-auth0-login">
+    <img src="https://codecov.io/gh/le0dime/nestjs-auth0-login/branch/master/graph/badge.svg" />
+  </a>
+</p>
+
 ## Description
 
 A template for using [Auth0](https://auth0.com) with the
