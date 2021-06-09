@@ -109,6 +109,13 @@ routes are decorated with `@UseGuards(AuthGuard('jwt'))` in
 [`AppController`](src/app.controller.ts) and
 [`UserController`](src/controllers/user/user.controller.ts).
 
+### How to get JWT token
+
+- Go to `auth/login` on your browser
+- Login or sign up
+- You will get a response with an access_token that will expire in 24 hours
+- Include that token as header for any endpoint that requires authorization
+
 ## More info
 
 See the [Nest documentation](https://docs.nestjs.com).
