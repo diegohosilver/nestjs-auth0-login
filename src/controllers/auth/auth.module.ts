@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
+import { ServicesModule } from 'src/services/services.module';
 
-import authConfig from '../config/auth.config';
+import authConfig from '../../config/auth.config';
+import { AuthController } from './auth.controller';
 
 import { JwtStrategy } from './jwt.strategy';
 
@@ -10,8 +12,10 @@ import { JwtStrategy } from './jwt.strategy';
   imports: [
     ConfigModule.forFeature(authConfig),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+	ServicesModule
   ],
+  controllers: [AuthController],
   providers: [JwtStrategy],
-  exports: [PassportModule, JwtStrategy],
+  exports: [PassportModule],
 })
 export class AuthModule {}
